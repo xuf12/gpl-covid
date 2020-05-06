@@ -4,6 +4,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(lfe))
 source("code/models/predict_felm.R")
 source("code/models/projection_helper_functions.R")
+<<<<<<< HEAD
 underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
                            col_types = cols(
                              country = col_character(),
@@ -14,6 +15,8 @@ underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
                              upper = col_double(),
                              underreporting_estimate_clean = col_character()
                            ))
+=======
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 korea_data <- read_csv("models/reg_data/KOR_reg_data.csv",
                    col_types = cols(
@@ -29,6 +32,32 @@ korea_data <- read_csv("models/reg_data/KOR_reg_data.csv",
   arrange(adm1_name, date) %>%
   mutate(tmp_id = factor(adm1_id),
          day_of_week = factor(dow))
+<<<<<<< HEAD
+=======
+if(!(exists("gamma") & class(gamma) != "function")){
+    gamma = readr::read_csv("models/gamma_est.csv",
+                            col_types = 
+                              cols(
+                                recovery_delay = col_double(),
+                                gamma = col_double()
+                              )) %>% 
+      filter(adm0_name %in% c("CHN", "KOR"), recovery_delay == 0) %>% 
+      pull(gamma) %>% 
+      mean()
+}
+if(!exists("underreporting")){
+    underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
+                               col_types = cols(
+                                 country = col_character(),
+                                 total_cases = col_double(),
+                                 total_deaths = col_double(),
+                                 underreporting_estimate = col_double(),
+                                 lower = col_double(),
+                                 upper = col_double(),
+                                 underreporting_estimate_clean = col_character()
+                               ))
+}
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 changed = TRUE
 while(changed){

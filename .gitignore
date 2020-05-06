@@ -155,6 +155,9 @@ default.profraw
 
 # papermill
 *-log.ipynb
+<<<<<<< HEAD
 
 # For CodeOcean only
 /data/
+=======
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51

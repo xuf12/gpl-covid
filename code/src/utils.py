@@ -3,6 +3,10 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+<<<<<<< HEAD
+=======
+from bs4 import BeautifulSoup
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 from . import __file__ as pkg_init_name
 
@@ -17,7 +21,11 @@ REG_DATA = MODELS / "reg_data"
 CODE = HOME / "code"
 
 ISOS = ["USA", "ITA", "FRA", "CHN", "KOR", "IRN"]
+<<<<<<< HEAD
 adm3_dir_fmt = "gadm36_{iso3}_{datestamp}.zip"
+=======
+adm3_dir_fmt = "gadm36_{iso3}.zip"
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 CUM_CASE_MIN_FILTER = 10
 PROCESSED_DATA_ERROR_HANDLING = "raise"
@@ -25,21 +33,47 @@ PROCESSED_DATA_DATE_CUTOFF = False
 
 COLORS = {"effect": "#27408B", "no_policy_growth_rate": "#8B0000"}
 
+<<<<<<< HEAD
 with open(CODE / "api_keys.json", "r") as f:
     API_KEYS = json.load(f)
 
+=======
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 def zipify_path(path):
     return "zip://" + str(path)
 
 
+<<<<<<< HEAD
 def download_zip(url, out_path, overwrite=False):
+=======
+def download_file(url, out_path, overwrite=False):
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     if (not out_path.exists()) or overwrite:
         r = requests.get(url, allow_redirects=True)
+<<<<<<< HEAD
         with open(out_path, "wb") as f:
             f.write(r.content)
+=======
+        if Path(out_path).suffix in [".csv", ".txt"]:
+            with open(out_path, "w") as f:
+                f.write(r.text)
+        else:
+            with open(out_path, "wb") as f:
+                f.write(r.content)
+    return None
+
+
+def get_scraped_text(url, out_path, overwrite=False):
+    if (not out_path.exists()) or overwrite:
+        with open(out_path, "w") as f:
+            f.write(requests.get(url).text)
+    with open(out_path, "r") as f:
+        text = BeautifulSoup(f.read(), "lxml")
+    return text
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 
 def iso_to_dirname(iso3):
@@ -54,10 +88,17 @@ def iso_to_dirname(iso3):
     return mapping[iso3]
 
 
+<<<<<<< HEAD
 def get_adm_zip_path(iso3, datestamp):
     dirname = iso_to_dirname(iso3)
     assert (DATA_RAW / dirname).is_dir(), DATA_RAW / dirname
     return DATA_RAW / dirname / adm3_dir_fmt.format(iso3=iso3, datestamp=datestamp)
+=======
+def get_adm_zip_path(iso3):
+    dirname = iso_to_dirname(iso3)
+    assert (DATA_RAW / dirname).is_dir(), DATA_RAW / dirname
+    return DATA_RAW / dirname / adm3_dir_fmt.format(iso3=iso3)
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 
 def downcast_floats(ser):

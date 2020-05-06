@@ -22,7 +22,10 @@ underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
                              upper = col_double(),
                              underreporting_estimate_clean = col_character()
                            ))
+<<<<<<< HEAD
 # source("code/models/calculate_gamma_from_china_and_korea.R")
+=======
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 gamma = readr::read_csv("models/gamma_est.csv",
                         col_types = 
                           cols(

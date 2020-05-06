@@ -4,6 +4,7 @@ suppressPackageStartupMessages(library(lfe))
 source("code/models/predict_felm.R")
 source("code/models/projection_helper_functions.R")
 source("code/data/multi_country/get_JHU_country_data.R")
+<<<<<<< HEAD
 underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
                            col_types = cols(
                              country = col_character(),
@@ -18,6 +19,33 @@ underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
 if(!(exists("gamma") & class(gamma) != "function")){
   gamma = 0.052
 }
+=======
+
+if(!(exists("gamma") & class(gamma) != "function")){
+    gamma = readr::read_csv("models/gamma_est.csv",
+                            col_types = 
+                              cols(
+                                recovery_delay = col_double(),
+                                gamma = col_double()
+                              )) %>% 
+      filter(adm0_name %in% c("CHN", "KOR"), recovery_delay == 0) %>% 
+      pull(gamma) %>% 
+      mean()
+}
+if(!exists("underreporting")){
+    underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
+                               col_types = cols(
+                                 country = col_character(),
+                                 total_cases = col_double(),
+                                 total_deaths = col_double(),
+                                 underreporting_estimate = col_double(),
+                                 lower = col_double(),
+                                 upper = col_double(),
+                                 underreporting_estimate_clean = col_character()
+                               ))
+}
+
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 china_data <- read_csv('models/reg_data/CHN_reg_data.csv',                   
                    col_types = cols(
                      .default = col_double(),

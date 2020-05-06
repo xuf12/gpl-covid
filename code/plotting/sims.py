@@ -1,8 +1,15 @@
 import argparse
 import warnings
 from pathlib import Path
+<<<<<<< HEAD
 
 import numpy as np
+=======
+from shutil import copyfile
+
+import numpy as np
+import pandas as pd
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -140,7 +147,11 @@ def make_coeff_factorplot(
 
 
 def make_all_coeff_factorplots(
+<<<<<<< HEAD
     dir_in, plot_dir=None, LHS_vars=[], save_source_data=None
+=======
+    dir_in, plot_dir=None, LHS_vars=[], save_source_data=None, save_paper_figs=False
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
 ):
     """Create factorplots of estimated coefficients derived from simulated outbreaks.
     Must have previously created the regression results, which is currently done
@@ -161,6 +172,13 @@ def make_all_coeff_factorplots(
         If not None, output the source data for these factorplots to this path. Only the
         `IR` and `I` LHS vars are output (to match what is included in the Extended 
         Data)
+<<<<<<< HEAD
+=======
+    save_paper_figs : bool
+        If True, save the subset of output figures used in the Extended Data of the 
+        manuscript to ``results/figures/appendix/FigED[8,9]`` and the source data to 
+        ``results/source_data/ExtendedDataFigure89.csv``.
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
     """
 
     coeffs = epi.load_and_combine_reg_results(
@@ -168,6 +186,13 @@ def make_all_coeff_factorplots(
     )
     coeffs = epi.calc_cum_effects(coeffs)
 
+<<<<<<< HEAD
+=======
+    if plot_dir is not None:
+        plot_dir = Path(plot_dir)
+        plot_dir.mkdir(exist_ok=True)
+
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
     print("Creating factorplots...")
     ## loop over population
     facet_kwargs = dict(row="sigma", col="gamma")
@@ -223,8 +248,11 @@ def make_all_coeff_factorplots(
                 )
 
                 if plot_dir is not None:
+<<<<<<< HEAD
                     plot_dir = Path(plot_dir)
                     plot_dir.mkdir(exist_ok=True)
+=======
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
                     for suffix in ["pdf", "png"]:
                         g.fig.savefig(
                             plot_dir / f"{var}_pop_{p}_LHS_{LHS}.{suffix}",
@@ -234,11 +262,37 @@ def make_all_coeff_factorplots(
                         )
                     plt.clf()
 
+<<<<<<< HEAD
     if save_source_data is not None:
         save_source_data = Path(save_source_data)
         coeffs.sel(LHS=["I", "IR"], policy=["Intercept", "cum_effect"])[
             ["S_min", "coefficient", "coefficient_true"]
         ].to_dataframe().to_csv(save_source_data, float_format="%.5f", index=True)
+=======
+    if save_paper_figs:
+        source_path = Path(cutil.RESULTS / "source_data" / "ExtendedDataFigure89.csv")
+        out_base = Path(cutil.RESULTS / "figures" / "appendix")
+
+        # source data
+        coeff_lim = coeffs.sel(policy=["Intercept", "cum_effect"])[
+            ["S_min", "coefficient", "coefficient_true"]
+        ]
+        df_a = coeff_lim.sel(LHS="I", pop=1e8).to_dataframe()
+        df_b = coeff_lim.sel(LHS="IR", pop=1e5).to_dataframe()
+        pd.concat((df_a, df_b)).to_csv(source_path, float_format="%.5f", index=True)
+
+        # figures
+        for t in (("Intercept", "FigED8"), ("cum_effect", "FigED9")):
+            out_dir = out_base / t[1]
+            out_dir.mkdir(parents=True, exist_ok=True)
+            copyfile(
+                plot_dir / f"{t[0]}_pop_100000000_LHS_I.pdf", out_dir / f"{t[1]}_a.pdf"
+            )
+            copyfile(
+                plot_dir / f"{t[0]}_pop_100000_LHS_IR.pdf", out_dir / f"{t[1]}_b.pdf"
+            )
+
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
     return None
 
 
@@ -265,11 +319,22 @@ if __name__ == "__main__":
         default=["I", "IR"],
     )
     parser.add_argument(
+<<<<<<< HEAD
         "--source-data",
         help="Path to save source data",
         type=lambda x: Path(x),
         default=None,
     )
+=======
+        "--paper-figs",
+        help=(
+            "Save the relevant Extended Data Figures to results/figures/appendix/EDFigX"
+            " and the source data to results/source_data/ExtendedDataFigure89.csv"
+        ),
+        action="store_true",
+    )
+
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
     args = parser.parse_args()
 
     sns.set(context="paper", style="ticks", font_scale=0.65)
@@ -279,5 +344,9 @@ if __name__ == "__main__":
         args.dir_in,
         plot_dir=args.dir_out,
         LHS_vars=args.LHS,
+<<<<<<< HEAD
         save_source_data=args.source_data,
+=======
+        save_paper_figs=args.paper_figs,
+>>>>>>> 3f7be048afb0e50d926b6a53b6ea7eb551308b51
     )

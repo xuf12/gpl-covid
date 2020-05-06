@@ -1,0 +1,24 @@
+name: CI
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 */1 * *'
+      
+jobs:
+  test:
+    name: Testing pipeline
+    runs-on: ubuntu-latest
+    env:
+      STATA_TESTS: false
+    steps:
+      - uses: actions/checkout@v2
+      - uses: goanpeca/setup-miniconda@v1
+        with:
+          auto-update-conda: true
+          python-version: 3.7
+          activate-environment: gpl-covid
+          environment-file: ./environment.yml
+      - shell: bash -l {0}
+        name: Run all tests
+        run: bash tests/run_tests.sh
